@@ -5,46 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Macro Transmission Monitor</title>
   <meta name="description" content="Macro Transmission Monitor - Oil Shock Regime Dashboard">
-  
-  <!-- React 18 via CDN (no build step needed) -->
   <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-  
-  <!-- Babel standalone transforms JSX in-browser -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
-  
-  <!-- Inter font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body, #root { height: 100%; }
     body { background: #F7F8FA; }
-    
-    /* Scrollbar styling for the ticker strip */
     ::-webkit-scrollbar { height: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 2px; }
-    
-    /* Loading state */
-    #loading {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      color: #9CA3AF;
-      font-size: 13px;
-    }
+    #loading { display: flex; align-items: center; justify-content: center; height: 100vh;
+      font-family: 'Inter', -apple-system, system-ui, sans-serif; color: #9CA3AF; font-size: 13px; }
     #loading.hidden { display: none; }
   </style>
 </head>
 <body>
-  <!-- Loading indicator (hidden once React mounts) -->
   <div id="loading">Loading dashboard...</div>
   <div id="root"></div>
-  
-  <!-- Dashboard application -->
   <script type="text/babel">
 const { useState, useMemo } = React;
 
@@ -59,7 +38,7 @@ const C = {
 const MONO=`'SF Mono','Consolas','Liberation Mono','Menlo',monospace`;
 const SANS=`'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif`;
 
-// ═══════════════ BLOOMBERG DATA (Jan 1, 2025 - Mar 25, 2026) ═══════════════
+// ═══════════════ BLOOMBERG DATA (Jan 1, 2025 - Mar 26, 2026) ═══════════════
 // Columns: [date, brent, wti, ovx, spx, vix, us10y, us3m, dxy, gold, natgas, move]
 const HD=[
 ["Jan 01",74.64,71.72,30.02,5881.63,17.35,4.569,4.3144,108.487,2624.5,3.633,98.8],
@@ -382,7 +361,8 @@ const HD=[
 ["Mar 20",112.19,98.32,91.85,6506.48,26.78,4.3796,3.6996,99.647,4492.42,3.095,108.84],
 ["Mar 23",99.94,88.13,89.78,6581.0,26.15,4.342,3.6891,98.95,4407.18,2.891,98.15],
 ["Mar 24",104.49,92.35,89.34,6556.37,26.95,4.3599,3.6862,99.434,4475.51,2.943,103.01],
-["Mar 25",102.22,90.32,90.16,6591.9,25.33,4.3322,3.7002,99.599,4506.0,2.952,97.59]];
+["Mar 25",102.22,90.32,90.16,6591.9,25.33,4.3322,3.7002,99.599,4506.0,2.952,97.59],
+["Mar 26",108.01,94.48,92.37,6477.16,27.44,4.4117,3.7056,99.9,4376.11,2.999,115.02]];
 const COLS=["brent","wti","ovx","spx","vix","us10y","us3m","dxy","gold","natgas","move"];
 const MO_MAP={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
 // Build ISO dates for each HD row (data spans Jan 2025 - Mar 2026)
@@ -451,86 +431,94 @@ const CMETA = {
 
 // ═══════════════ INDICATORS (Bloomberg Mar 25 close) ═══════════════
 const IND = [
-  {id:"brent",label:"Brent",v:102.22,d:-2.27,dec:2},
-  {id:"wti",label:"WTI",v:90.32,d:-2.03,dec:2},
-  {id:"ovx",label:"OVX",v:90.16,d:+0.82,dec:1,inv:true},
-  {id:"spx",label:"S&P 500",v:6591.90,d:+35.53,dec:0},
-  {id:"vix",label:"VIX",v:25.33,d:-1.62,dec:2,inv:true},
-  {id:"us10y",label:"US 10Y",v:4.33,d:-0.03,dec:2,inv:true,suf:"%"},
-  {id:"us3m",label:"3M Bill",v:3.70,d:+0.01,dec:2,suf:"%"},
-  {id:"spread",label:"10Y-3M",v:0.63,d:-0.04,dec:2,suf:"%"},
-  {id:"move",label:"MOVE",v:97.59,d:-5.42,dec:1,inv:true},
-  {id:"dxy",label:"DXY",v:99.60,d:+0.17,dec:2,inv:true},
-  {id:"gold",label:"Gold",v:4506,d:+30.49,dec:0},
-  {id:"natgas",label:"Nat Gas",v:2.95,d:+0.01,dec:2},
+  {id:"brent",label:"Brent",v:108.01,d:+5.79,dec:2},
+  {id:"wti",label:"WTI",v:94.48,d:+4.16,dec:2},
+  {id:"ovx",label:"OVX",v:92.37,d:+2.21,dec:1,inv:true},
+  {id:"spx",label:"S&P 500",v:6477.16,d:-114.74,dec:0},
+  {id:"vix",label:"VIX",v:27.44,d:+2.11,dec:2,inv:true},
+  {id:"us10y",label:"US 10Y",v:4.41,d:+0.08,dec:2,inv:true,suf:"%"},
+  {id:"us3m",label:"3M Bill",v:3.71,d:+0.01,dec:2,suf:"%"},
+  {id:"spread",label:"10Y-3M",v:0.71,d:+0.07,dec:2,suf:"%"},
+  {id:"move",label:"MOVE",v:115.02,d:+17.43,dec:1,inv:true},
+  {id:"dxy",label:"DXY",v:99.90,d:+0.30,dec:2,inv:true},
+  {id:"gold",label:"Gold",v:4376,d:-129.89,dec:0},
+  {id:"natgas",label:"Nat Gas",v:3.00,d:+0.05,dec:2},
 ];
-const REG={label:"STAGFLATIONARY SHOCK",conf:82,step:3,tot:7,warDay:26,oil95:15,
-  why:"Supply shock confirmed: Brent >$100 on Hormuz closure (SRAS left). Growth deteriorating: NFP -92K, UE 4.4% (output below potential). Inflation elevated: Core PCE 3.1%, PPI +3.4% (prices rising). Fed hasn't hiked yet -- rules out 'Policy Tightening'. Curve positive (+63bp), no credit blowout -- rules out 'Pre-Recession'. The 18% residual reflects the path where oil falls below $95 on ceasefire progress and the regime reclassifies to 'Supply-Driven Inflation' (shock fading, growth weak but not stagflationary).",
+const REG={label:"STAGFLATIONARY SHOCK",conf:85,step:3,tot:7,warDay:27,oil95:12,
+  why:"Supply shock intensifying: Brent surged back to $108 after Iran rejected ceasefire (SRAS left). Growth deteriorating: SPX -5% from ATH, NFP -92K, UE 4.4%. Inflation elevated: Core PCE 3.1%, PPI +3.4%. MOVE at 115 signals severe bond market stress. Fed hasn't hiked -- rules out 'Policy Tightening'. Curve positive (+71bp) but rates surging -- approaching Step 4 transition. The 15% residual narrows as ceasefire path collapses with Iran's formal rejection.",
 };
 const ALERTS=[
-  {lvl:"warn",text:"Brent $102.22 -- above $100; supply shock threshold active"},
-  {lvl:"info",text:"MOVE 97.59 (-5.42) -- bond vol easing from 103 on ceasefire hopes"},
-  {lvl:"info",text:"Curve positive +63bp -- steepening from prior inversion"},
+  {lvl:"warn",text:"Brent $108.01 (+$5.79) -- surging back toward peak on Iran rejection; above $100 for 10 sessions"},
+  {lvl:"warn",text:"MOVE 115.02 (+17.43) -- bond vol exploding; crossed 100 stress zone; highest since war start"},
+  {lvl:"warn",text:"SPX -115 (-1.7%) -- broad risk-off; VIX 27.44; gold -$130 (margin liquidation?)"},
 ];
 const CHG=[
-  "Brent -$2.27 to $102.22 on ceasefire-talk headlines -- Iran formally rejected US plan",
-  "MOVE fell to 97.59 (-5.42) -- bond vol relief on diplomacy signals",
-  "Gold +$30 to $4,506 -- safe haven bid persists despite ceasefire talk",
-  "Fed Gov. Barr: rates may need to stay elevated 'for some time'",
+  "Brent +$5.79 to $108.01 -- Iran formally rejected 15-point ceasefire; ceasefire path collapsing",
+  "MOVE exploded +17.43 to 115.02 -- bond vol stress at extreme levels; rates selling off",
+  "SPX -114.74 to 6,477 -- broad risk-off; VIX +2.11 to 27.44",
+  "Gold -$130 to $4,376 -- unusual in risk-off; likely margin-call forced liquidation",
+  "US 10Y +8bp to 4.41% -- bond sell-off accelerating; curve steepening to +71bp",
 ];
 const DRV_DATA=[
-  "Oil >$95/bbl for ~15 trading days; Brent peaked $112 (close) on Hormuz closure",
+  "Oil >$95/bbl for ~12 trading days; Brent peaked $112 (close); now $108 and re-accelerating",
   "Feb payrolls -92K, unemployment 4.4% -- growth decelerating",
-  "Fed held at 3.50-3.75%, signaling no cuts in 2026",
+  "Fed held at 3.50-3.75%, signaling no cuts in 2026; 10Y now at 4.41%",
 ];
 const DER=[
-  {label:"Oil Shock Persistence",reading:"HIGH",lvl:"neg",detail:"Brent $102 (>$100) / peak $112 / OVX 90 (3x pre-war) / +37% vs Jan"},
-  {label:"Financial Conditions",reading:"TIGHTENING",lvl:"warn",detail:"FFR on hold / VIX 25.3 / DXY 99.6 / MOVE 97.6 (easing)"},
-  {label:"Growth Expectations",reading:"DETERIORATING",lvl:"neg",detail:"SPX -4% from Jan ATH / NFP -92K / curve steepening from inversion"},
-  {label:"Inflation Pressure",reading:"ELEVATED",lvl:"neg",detail:"Oil >$100 / Core PCE 3.1% (Feb; up from 2.8%) / Core CPI 2.5% / PPI +3.4%"},
+  {label:"Oil Shock Persistence",reading:"HIGH / WORSENING",lvl:"neg",detail:"Brent $108 (re-accelerating) / peak $112 / OVX 92 (3x pre-war) / +45% vs Jan"},
+  {label:"Financial Conditions",reading:"SHARPLY TIGHTENING",lvl:"neg",detail:"MOVE 115 (extreme) / VIX 27.4 / DXY 99.9 / 10Y at 4.41% (+8bp)"},
+  {label:"Growth Expectations",reading:"DETERIORATING",lvl:"neg",detail:"SPX -5% from ATH / NFP -92K / SPX -115 in single session"},
+  {label:"Inflation Pressure",reading:"ELEVATED",lvl:"neg",detail:"Oil >$108 / Core PCE 3.1% (Feb; up from 2.8%) / Core CPI 2.5% / PPI +3.4%"},
 ];
 const CHAIN=[
   {id:1,label:"Initial Equilibrium",sym:"Y*, P0, r0",st:"passed",detail:"Pre-war: Brent ~$73, FFR 3.50-3.75%, SPX ~6,850, UE 4.2%"},
   {id:2,label:"Supply Shock > SRAS left",sym:"SRAS shifts left",st:"passed",detail:"Hormuz closed Feb 28. Brent +55% to $112 peak (close). 20% seaborne oil disrupted."},
-  {id:3,label:"Stagflation: P up, Y down",sym:"P up / Y down",st:"active",detail:"PPI +3.4% y/y, oil >$100. Feb NFP -92K. Output contracting, prices rising."},
-  {id:4,label:"CB Reaction > LM left",sym:"r up / LM left",st:"approaching",detail:"Fed held, flagged inflation stickiness. Zero cuts priced. Hikes entering probability."},
+  {id:3,label:"Stagflation: P up, Y down",sym:"P up / Y down",st:"active",detail:"PPI +3.4% y/y, oil >$108 and re-accelerating. Feb NFP -92K. Output contracting, prices rising."},
+  {id:4,label:"CB Reaction > LM left",sym:"r up / LM left",st:"approaching",detail:"Fed held, but 10Y surging to 4.41%. MOVE at 115 = bond market forcing tightening. Hikes entering probability."},
   {id:5,label:"Investment Compression",sym:"I(r) down",st:"future",detail:"Watch: Q1 capex guidance, credit spreads, senior loan officer survey."},
   {id:6,label:"Demand Contraction > IS left",sym:"IS shifts left",st:"future",detail:"Contingent on sustained high rates + oil. Consumer spend is the key variable."},
   {id:7,label:"Disinflation > Weaker Eq.",sym:"r down / Y down",st:"future",detail:"Terminal state if shock persists. Recession + eventual easing cycle."},
 ];
 const IMPL=[
-  {axis:"Growth",dir:"neg",arrow:"\u25BC",sig:"Payrolls contracting, PMIs softening, oil tax on consumers"},
-  {axis:"Inflation",dir:"neg",arrow:"\u25B2",sig:"Oil cost-push sustaining; Brent >$100; PPI +3.4% y/y"},
-  {axis:"Rates",dir:"warn",arrow:"\u2192",sig:"10Y at 4.33%; Fed on hold indefinitely; fiscal spending rising"},
-  {axis:"Risk Assets",dir:"neg",arrow:"\u25BC",sig:"SPX -4% from pre-war; VIX >25; oil vol elevated"},
+  {axis:"Growth",dir:"neg",arrow:"\u25BC",sig:"Payrolls contracting, PMIs softening, oil tax on consumers; SPX -115 in one session"},
+  {axis:"Inflation",dir:"neg",arrow:"\u25B2",sig:"Oil re-accelerating to $108; Brent approaching peak; PPI +3.4% y/y"},
+  {axis:"Rates",dir:"neg",arrow:"\u25B2",sig:"10Y surging to 4.41% (+8bp); MOVE 115 = bond market stress extreme; curve +71bp"},
+  {axis:"Risk Assets",dir:"neg",arrow:"\u25BC",sig:"SPX -5% from pre-war; VIX 27.4; gold liquidation -$130"},
 ];
 const TMAP=[
-  {title:"AS-AD Position",status:"STAGFLATION",color:C.neg,lines:["SRAS shifted left -- oil cost-push","Output below LRAS potential","Price level elevated: PPI +3.4%"]},
-  {title:"LM Stance",status:"TIGHTENING BIAS",color:C.warn,lines:["Fed held 3.50-3.75%","No cuts priced for 2026","Rate hikes entering probability"]},
-  {title:"IS Trajectory",status:"STABLE / AT RISK",color:C.info,lines:["IS not yet shifting left","Consumer spending resilient","Watch Q1 capex / credit data"]},
+  {title:"AS-AD Position",status:"STAGFLATION",color:C.neg,lines:["SRAS shifted left -- oil cost-push","Output below LRAS potential","Price level elevated: PPI +3.4%; oil $108"]},
+  {title:"LM Stance",status:"TIGHTENING",color:C.neg,lines:["Fed held 3.50-3.75% but 10Y surging to 4.41%","MOVE at 115 -- bond market forcing tightening","Rate hikes entering probability"]},
+  {title:"IS Trajectory",status:"AT RISK",color:C.warn,lines:["SPX -115 in single session","Gold liquidation signals margin stress","Watch Q1 capex / credit spreads"]},
 ];
 const FWD={
-  next:"Step 3 to 4 transition. If oil remains >$95 through April, the June dot plot embeds hawkish bias. Watch for guidance shift from 'hold' to 'open to hike' -- formalising the LM leftward shift.",
-  inv:"Ceasefire + Hormuz reopening within 2 weeks. Brent <$80 collapses the supply-shock transmission. Iran's 5-point counterproposal (Hormuz sovereignty) is a nonstarter -- quick resolution probability: ~15%.",
+  next:"Step 3 to 4 transition accelerating. The bond market is doing the Fed's work -- 10Y at 4.41% with MOVE at 115 is de facto tightening. If Brent holds >$105 and MOVE stays >100 through next week, Step 4 (formal CB reaction) may be formalised at the next FOMC.",
+  inv:"Ceasefire + Hormuz reopening. But Iran's formal rejection of the 15-point plan and 5-point counterproposal (Hormuz sovereignty + reparations) makes this increasingly unlikely. Quick resolution probability now ~10%. Gold liquidation suggests stress is broadening beyond oil.",
 };
 const GEO=[
-  {src:"AP / Reuters",text:"Iran rejects US 15-point ceasefire plan; issues 5-point counterproposal demanding sovereignty over Strait of Hormuz and war reparations.",url:"https://www.cnbc.com/2026/03/25/iran-war-us-trump.html"},
-  {src:"AP",text:"~1,000 troops from 82nd Airborne deploying to Middle East; two Marine units activated. Escalation capacity maintained.",url:"https://www.npr.org/2026/03/25/nx-s1-5760675/iran-war-military-deployment"},
-  {src:"Press TV / Reuters",text:"Iran struck Kuwait International Airport (fuel storage fire). Gulf states signaling readiness to join conflict against Iran.",url:"https://www.iranintl.com/en/202603253889"},
-  {src:"NHK / Reuters",text:"Japan begins releasing 30 days of strategic oil reserves Thursday -- largest in history. Selective Hormuz transit for Pakistan, India.",url:"https://www.cnn.com/2026/03/24/middleeast/us-israel-iran-middle-east-war-day-26-what-we-know-intl-hnk"},
+  {src:"CNBC / Bloomberg",text:"Trump extends energy-strike pause by 10 days to April 6. Claims Iran requested the extension and gave 10 oil tankers passage through Hormuz as a 'present'.",url:"https://www.cnbc.com/2026/03/26/trump-iran-war-oil-energy-pause.html"},
+  {src:"NPR / ABC",text:"Pentagon deploying up to 3,000 paratroopers from 82nd Airborne + Marines to Middle East. Trump reportedly weighing seizure of Kharg Island (Iran's main oil port).",url:"https://www.npr.org/2026/03/26/nx-s1-5761882/iran-war-peace-conditions"},
+  {src:"CNN / IAEA",text:"Israel struck near Bushehr nuclear power plant. IAEA chief warns of potential 'major radiological accident'. Israel also killed IRGC navy commander behind Hormuz attacks.",url:"https://www.cnn.com/2026/03/26/world/live-news/iran-war-us-israel-trump"},
+  {src:"Pew / AP-NORC",text:"59% of Americans say military action in Iran has 'gone too far'. 61% disapprove of Trump's handling. Iranian parliament planning to formalise fees for Hormuz transit.",url:"https://www.cnn.com/2026/03/25/world/live-news/iran-war-us-israel-trump-03-25-26"},
 ];
 const HMZ={
-  status:"RESTRICTED",days:26,cf:15,
+  status:"RESTRICTED",days:27,cf:10,
   sc:[
-    {l:"Ceasefire <= 1 week",p:15,why:"Iran formally rejected US 15-point plan and demands Hormuz sovereignty -- a nonstarter. No direct talks acknowledged. 82nd Airborne deploying, not withdrawing. 15% reflects only a sudden unilateral Trump concession or internal Iranian power shift."},
-    {l:"Hormuz partial reopen (30d)",p:35,why:"Iran already selectively allowing neutral-flag vessels (India, Pakistan, Turkey). Economic pressure on Iran's own lost export revenue creates incentive. Goldman base case assumes April normalisation. Higher than ceasefire because partial reopening doesn't require full peace."},
-    {l:"Oil >$95 through Q2",p:70,why:"Inverse of ceasefire probability with buffer. Even partial Hormuz reopening takes weeks for tanker traffic and inventories to normalise. Strategic reserve releases (Japan 30d) are finite. OPEC+ has limited spare capacity. Only rapid ceasefire + immediate reopening + demand destruction collapses price."},
-    {l:"Gulf state escalation",p:40,why:"WSJ/AP report Saudi and UAE 'moving closer' to joining against Iran. Iran struck Kuwait airport directly. Gulf states have capability and US backing. 40% because they historically prefer proxy action and diplomatic off-ramps via Pakistan/Turkey still exist."},
+    {l:"Ceasefire <= 1 week",p:10,why:"Iran formally rejected the 15-point plan AND issued a 5-point counterproposal demanding Hormuz sovereignty + reparations. 82nd Airborne deploying. Brent surging to $108 shows market has abandoned ceasefire pricing. 10% reflects only a black-swan internal Iranian collapse."},
+    {l:"Hormuz partial reopen (30d)",p:30,why:"Iran still selectively allowing neutral-flag vessels but the formal rejection reduces diplomatic momentum. Economic pressure on Iran persists but the counterproposal signals maximalist positioning, not compromise. Lowered from 35% as talks have effectively stalled."},
+    {l:"Oil >$95 through Q2",p:80,why:"Brent surged back to $108 after the ceasefire rejection -- the brief dip below $100 was a head-fake. Strategic reserves finite (Japan 30d). OPEC+ has no spare capacity. With ceasefire probability collapsing, the base case is sustained >$95. Raised from 70%."},
+    {l:"Gulf state escalation",p:45,why:"Iran struck Kuwait airport; Saudi/UAE expelling Iranian diplomats; Gulf states 'moving closer' to joining per WSJ/AP. Gold liquidation suggests broader stress. Raised from 40% as diplomatic off-ramps are narrowing with each rejected proposal."},
   ],
 };
 
 // ═══════════════ TRUMP STATEMENTS TIMELINE (sourced, chronological) ═══════════════
 const TIMELINE=[
+  {date:"Mar 26",ctx:"Truth Social (energy pause extension)",quote:"As per Iranian Government request, I am pausing the period of Energy Plant destruction by 10 Days to Monday, April 6, 2026, at 8 P.M., Eastern Time. Talks are ongoing and they are going very well.",src:"Truth Social / CNBC",url:"https://www.cnbc.com/2026/03/26/trump-iran-war-oil-energy-pause.html"},
+  {date:"Mar 26",ctx:"Truth Social (threat to Iran)",quote:"They better get serious soon, before it is too late, because once that happens, there is NO TURNING BACK, and it won't be pretty!",src:"Truth Social / CNBC",url:"https://www.cnbc.com/2026/03/26/trump-iran-negotiations.html"},
+  {date:"Mar 26",ctx:"Cabinet meeting",quote:"We have very substantial talks going on with respect to Iran.",src:"White House / ABC",url:"https://abcnews.com/International/live-updates/iran-live-updates-trumps-48-hour-deadline-expire/?id=131316431"},
+  {date:"Mar 26",ctx:"Fox News interview",quote:"The Iranians asked me. They gave me ships -- 10 oil tankers through the Strait this week as a present.",src:"Fox News / CNBC",url:"https://www.cnbc.com/2026/03/26/trump-iran-war-oil-energy-pause.html"},
+  {date:"Mar 26",ctx:"On Iran's negotiating stance",quote:"They have been militarily obliterated, with zero chance of a comeback. Yet they publicly state they are only 'looking at our proposal.' WRONG!!!",src:"Truth Social / CNBC",url:"https://www.cnbc.com/2026/03/26/trump-iran-negotiations.html"},
+  {date:"Mar 25",ctx:"NRCC fundraiser dinner",quote:"We're winning so big. Nobody's ever seen anything like what we're doing. They want to make a deal so badly but they're afraid to say it.",src:"NBC",url:"https://www.nbcnews.com/world/middle-east/live-blog/live-updates-iran-war-talks-trump-peace-plan-troops-hormuz-rcna265051"},
+  {date:"Mar 25",ctx:"On Iran wanting a deal",quote:"They want to make a deal so badly but they're afraid to say it. Because they figure they'll be killed by their own people. They're also afraid they'll be killed by us.",src:"CNN",url:"https://www.cnn.com/2026/03/25/world/live-news/iran-war-us-israel-trump-03-25-26"},
   {date:"Mar 25",ctx:"After Iran rejects 15-point plan",quote:"They have until the end of the week. The 82nd Airborne is deploying. We are not going to wait forever.",src:"White House / NPR",url:"https://www.npr.org/2026/03/25/nx-s1-5760675/iran-war-military-deployment"},
   {date:"Mar 25",ctx:"On Iran's counterproposal",quote:"Their five points are ridiculous. They want reparations? They want sovereignty over Hormuz? That's not happening.",src:"Remarks to reporters / CNBC",url:"https://www.cnbc.com/2026/03/25/iran-war-us-trump.html"},
   {date:"Mar 24",ctx:"On Iran's military capacity",quote:"The other side, I can tell you they'd like to make a deal. Their navy's gone, their air force is gone, their communications are done -- that's the biggest problem.",src:"Oval Office / Iran International",url:"https://www.iranintl.com/en/202603253465"},
@@ -561,22 +549,19 @@ const INFL=[
   {id:"ppi",    label:"PPI",      v:3.4, prev:3.4, mom:0.0, period:"Feb 26", released:"Mar 13", note:"Headline wholesale; Core PPI +3.9%. Oil shock not yet in Feb data"},
 ];
 
-// ═══════════════ SPX OPTIONS SCENARIO (Dec 31, 2026 / 281 DTE) ═══════════════
+// ═══════════════ SPX OPTIONS SCENARIO (Dec 31, 2026 / 280 DTE) ═══════════════
 const OPT={
-  spot:6591.90, expiry:"31 Dec 2026", dte:281, hv:13.43, ff:6537, rate:4.06, div:0.61,
+  spot:6477.16, expiry:"31 Dec 2026", dte:280, hv:13.61, ff:6501, rate:4.08, div:0.64,
   scenarios:[
-    {id:"bull",label:"BULL",spx:7251,strike:7250,move:"+10%",
-     callMid:189.95,putMid:722.35,ivm:16.66,delta:0.32,
-     color:C.pos,thesis:"Ceasefire + Hormuz reopening, oil <$80, Fed cuts resume, earnings reaccelerate"},
-    {id:"base",label:"BASE",spx:6592,strike:6590,move:"~0%",
-     callMid:532.90,putMid:427.65,ivm:20.87,delta:0.57,
-     color:C.warn,thesis:"Prolonged oil >$95, Fed on hold, growth slows but no recession, range-bound market"},
-    {id:"bear",label:"BEAR",spx:5933,strike:5930,move:"-10%",
-     callMid:993.70,putMid:244.55,ivm:24.73,delta:0.26,
-     color:C.neg,thesis:"War escalation, Gulf states enter, oil >$130, recession triggers, credit stress emerges"},
+    {id:"bull",label:"BULL",spx:7125,strike:7125,move:"+10%",
+     callMid:229.90,putMid:676.80,ivm:17.44,delta:0.37,color:C.pos},
+    {id:"base",label:"BASE",spx:6477,strike:6480,move:"~0%",
+     callMid:580.75,putMid:405.65,ivm:21.57,delta:0.59,color:C.warn},
+    {id:"bear",label:"BEAR",spx:5829,strike:5830,move:"-10%",
+     callMid:1038.60,putMid:233.60,ivm:25.18,delta:0.25,color:C.neg},
   ],
-  straddle:960.55, straddlePct:14.6, skew:8.07,
-  riskRev:54.60, riskRevPct:0.83,
+  straddle:986.40, straddlePct:15.2, skew:7.74,
+  riskRev:3.70, riskRevPct:0.06,
 };
 
 // ═══════════════ UTILS ═══════════════
@@ -677,7 +662,7 @@ function App(){
       <header style={{background:C.surface,borderBottom:`1px solid ${C.border}`,padding:"12px 24px",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8}}>
         <div style={{display:"flex",alignItems:"baseline",gap:14}}>
           <span style={{fontSize:14,fontWeight:700,letterSpacing:-0.3}}>Macro Transmission Monitor</span>
-          <span style={{fontSize:11,color:C.muted,fontWeight:500}}>26 Mar 2026 08:00 SGT</span>
+          <span style={{fontSize:11,color:C.muted,fontWeight:500}}>27 Mar 2026 09:00 SGT</span>
         </div>
         <div style={{display:"flex",alignItems:"center",gap:10}}><Pill/><M t={`Step ${REG.step}/${REG.tot}`}/><M t={`War Day ${REG.warDay}`}/><M t={`Oil>95 ~${REG.oil95}d`}/></div>
       </header>
@@ -820,9 +805,9 @@ function ChartBox({id,onClose}){
       {/* Chart */}
       {(()=>{
         const spxLevels = id==="spx" ? [
-          {value:7251,pct:"+10%",prob:"Prob(>7,251) ~32%",color:C.pos},
-          {value:6592,pct:"~0%",prob:"Prob(>6,592) ~57%",color:C.warn},
-          {value:5933,pct:"-10%",prob:"Prob(<5,933) ~26%",color:C.neg},
+          {value:7125,pct:"+10%",prob:"Prob(>7,125) ~37%",color:C.pos},
+          {value:6477,pct:"~0%",prob:"Prob(>6,477) ~59%",color:C.warn},
+          {value:5829,pct:"-10%",prob:"Prob(<5,829) ~25%",color:C.neg},
         ] : null;
         return <SVGChart data={data} color={m.color} dec={m.dec} unit={m.unit||""} levels={spxLevels}/>;
       })()}
@@ -857,30 +842,29 @@ function Overview(){
       </div>
       {/* Scenario table */}
       <div style={{border:`1px solid ${C.border}`,borderRadius:4,overflow:"hidden",marginBottom:14}}>
-        <div style={{display:"grid",gridTemplateColumns:"80px 70px 70px 100px 90px 70px 1fr",background:C.bg,padding:"6px 10px",gap:8}}>
-          {["Scenario","SPX","Move","Strike / IVM","Cost (% spot)","Delta","Thesis"].map(h=><span key={h} style={{fontSize:9,fontWeight:600,color:C.muted,letterSpacing:0.3}}>{h}</span>)}
+        <div style={{display:"grid",gridTemplateColumns:"80px 80px 70px 110px 110px 70px",background:C.bg,padding:"6px 10px",gap:8}}>
+          {["Scenario","SPX","Move","Strike / IVM","Cost (% spot)","Delta"].map(h=><span key={h} style={{fontSize:9,fontWeight:600,color:C.muted,letterSpacing:0.3}}>{h}</span>)}
         </div>
         {OPT.scenarios.map((s,i)=>{
           const cost = s.id==="bull" ? s.callMid : s.id==="bear" ? s.putMid : s.callMid+s.putMid;
           const costPct = (cost/OPT.spot*100);
           const costLabel = s.id==="bull" ? `Call: ${f(cost,0)}` : s.id==="bear" ? `Put: ${f(cost,0)}` : `Straddle: ${f(cost,0)}`;
-          return <div key={s.id} style={{display:"grid",gridTemplateColumns:"80px 70px 70px 100px 90px 70px 1fr",padding:"8px 10px",gap:8,borderTop:`1px solid ${C.border}`,alignItems:"flex-start"}}>
+          return <div key={s.id} style={{display:"grid",gridTemplateColumns:"80px 80px 70px 110px 110px 70px",padding:"8px 10px",gap:8,borderTop:`1px solid ${C.border}`,alignItems:"flex-start"}}>
             <span style={{fontSize:11,fontWeight:700,color:s.color}}>{s.label}</span>
             <span style={{fontSize:12,fontWeight:700,fontFamily:MONO,color:C.text}}>{f(s.spx,0)}</span>
             <span style={{fontSize:11,fontWeight:600,fontFamily:MONO,color:s.color}}>{s.move}</span>
             <div><span style={{fontSize:11,fontFamily:MONO,color:C.text}}>{s.strike}</span><span style={{fontSize:10,color:C.muted,marginLeft:4}}>/ {f(s.ivm,1)}%</span></div>
             <div><span style={{fontSize:10,fontFamily:MONO,color:C.text}}>{costLabel}</span><span style={{fontSize:9,color:C.muted,display:"block"}}>{f(costPct,1)}% of spot</span></div>
             <span style={{fontSize:11,fontFamily:MONO,color:C.muted}}>{f(s.delta,2)}</span>
-            <span style={{fontSize:10,color:C.textSec,lineHeight:1.4}}>{s.thesis}</span>
           </div>;
         })}
       </div>
       {/* Projection chart */}
       <div style={{marginBottom:14}}>
         <SVGChart data={getHistory("spx")} color={CMETA.spx.color} dec={0} unit="" height={240} levels={[
-          {value:7251,pct:"+10%",prob:"Prob(>7,251) ~32%",color:C.pos},
-          {value:6592,pct:"~0%",prob:"Prob(>6,592) ~57%",color:C.warn},
-          {value:5933,pct:"-10%",prob:"Prob(<5,933) ~26%",color:C.neg},
+          {value:7125,pct:"+10%",prob:"Prob(>7,125) ~37%",color:C.pos},
+          {value:6477,pct:"~0%",prob:"Prob(>6,477) ~59%",color:C.warn},
+          {value:5829,pct:"-10%",prob:"Prob(<5,829) ~25%",color:C.neg},
         ]}/>
       </div>
       {/* Vol skew + market signals */}
@@ -900,7 +884,7 @@ function Overview(){
             {["Bear (-10%)","ATM","Bull (+10%)"].map(l=><span key={l} style={{flex:1,textAlign:"center",fontSize:8,color:C.muted}}>{l}</span>)}
           </div>
           <div style={{fontSize:10,color:C.textSec,lineHeight:1.5,marginTop:8}}>
-            Skew spread: {f(OPT.skew,1)}pp (bear - bull). Downside protection costs 29% more than upside participation for equal distance from spot.
+            Skew spread: {f(OPT.skew,1)}pp (bear - bull). Puts now cost only ~2% more than calls for same distance -- skew has collapsed from 29% yesterday as vol repriced uniformly higher.
           </div>
         </div>
         <div>
@@ -923,7 +907,7 @@ function Overview(){
               <span style={{fontSize:11,fontWeight:700,fontFamily:MONO,color:C.neg}}>IV premium: {f(OPT.scenarios[2].ivm - OPT.hv,1)}pp</span>
             </div>
             <div style={{fontSize:10,color:C.textSec,lineHeight:1.5,marginTop:4}}>
-              ATM IV (20.9%) trades 7.4pp above realised vol (13.4%). Market is pricing significantly more uncertainty than recent history — consistent with war regime and Hormuz disruption premium.
+              ATM IV (21.6%) trades 8.0pp above realised vol (13.6%). IV premium widening -- market pricing escalation risk after Iran's ceasefire rejection. Skew collapsing as vol reprices uniformly higher across strikes.
             </div>
           </div>
         </div>
@@ -1003,12 +987,8 @@ function KPI({l,v,c}){return <div><div style={{fontSize:10,color:C.muted,fontWei
 function Card({children}){return <div style={{background:C.surface,border:`1px solid ${C.border}`,borderRadius:6,padding:"16px 20px"}}>{children}</div>;}
 function SH({children}){return <div style={{fontSize:10,fontWeight:600,color:C.muted,letterSpacing:0.6,textTransform:"uppercase",marginBottom:12,paddingBottom:8,borderBottom:`1px solid ${C.border}`}}>{children}</div>;}
 
-
-    // Mount the app
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(React.createElement(App));
-    
-    // Hide loading indicator
     document.getElementById('loading').classList.add('hidden');
   </script>
 </body>

@@ -839,7 +839,7 @@ const OPT={
 const f=(v,d=2)=>typeof v==="number"?v.toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d}):v;
 const sg=v=>v>0?"+":"";
 const dc=(v,inv)=>{const p=inv?v<0:v>0;const n=inv?v>0:v<0;return p?C.pos:n?C.neg:C.muted;};
-const dg=(v,inv)=>{const p=inv?v<0:v>0;const n=inv?v>0:v<0;return p?"\u25B2":n?"\u25BC":"-";};
+const dg=(v)=>v>0?"\u25B2":v<0?"\u25BC":"-";
 const lc=l=>l==="neg"?C.neg:l==="warn"?C.warn:C.info;
 
 // ═══════════════ SVG CHART ═══════════════
@@ -974,7 +974,7 @@ function Tick({label,v,d,dec,inv,suf,sel,onClick}){
   return <div onClick={onClick} style={{padding:"9px 14px",minWidth:80,flexShrink:0,borderRight:`1px solid ${C.border}`,cursor:"pointer",background:sel?C.infoBg:C.surface,borderBottom:sel?`2px solid ${C.info}`:"2px solid transparent",transition:"background 0.1s"}}>
     <div style={{fontSize:10,color:sel?C.info:C.muted,fontWeight:sel?600:500,marginBottom:1,letterSpacing:0.3}}>{label}</div>
     <div style={{display:"flex",alignItems:"baseline",gap:3}}><span style={{fontSize:14,fontWeight:700,color:C.text,fontFamily:MONO,letterSpacing:-0.5}}>{f(v,dec)}</span>{suf&&<span style={{fontSize:10,color:C.muted}}>{suf}</span>}</div>
-    <div style={{fontSize:10,fontWeight:600,color:dc(d,inv),fontFamily:MONO,marginTop:1}}>{dg(d,inv)} {sg(d)}{f(d,dec)}</div>
+    <div style={{fontSize:10,fontWeight:600,color:dc(d,inv),fontFamily:MONO,marginTop:1}}>{dg(d)} {sg(d)}{f(d,dec)}{(()=>{const prev=v-d;const pct=prev!==0?(d/prev)*100:0;return pct!==0?` (${sg(pct)}${f(Math.abs(pct),1)}%)`:"";})()}</div>
   </div>;
 }
 function InflStrip(){
